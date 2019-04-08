@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.junhow.gp.dao.FlowerMapper">
+  <resultMap id="BaseResultMap" type="com.junhow.gp.pojo.Flower">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="phylumname" jdbcType="VARCHAR" property="phylumname" />
+    <result column="classname" jdbcType="VARCHAR" property="classname" />
+    <result column="ordername" jdbcType="VARCHAR" property="ordername" />
+    <result column="familyname" jdbcType="VARCHAR" property="familyname" />
+    <result column="genusname" jdbcType="VARCHAR" property="genusname" />
+    <result column="speciesname" jdbcType="VARCHAR" property="speciesname" />
+    <result column="subspeciesname" jdbcType="VARCHAR" property="subspeciesname" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="latinname" jdbcType="VARCHAR" property="latinname" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="grade" jdbcType="INTEGER" property="grade" />
+    <result column="valid" jdbcType="VARCHAR" property="valid" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+</mapper>

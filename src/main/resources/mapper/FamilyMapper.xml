@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.junhow.gp.dao.FamilyMapper">
+  <resultMap id="BaseResultMap" type="com.junhow.gp.pojo.Family">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="orderid" jdbcType="INTEGER" property="orderid" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="parentid" jdbcType="VARCHAR" property="parentid" />
+    <result column="latinname" jdbcType="VARCHAR" property="latinname" />
+  </resultMap>
+</mapper>

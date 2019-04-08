@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/common :: head('花卉列表')"></head>
+<body>
+
+<div class="weadmin-body">
+    <table id="userTableData" lay-filter="userTableData"></table>
+
+    <div id="add" style="padding-top:30px;padding-right: 70px;display: none">
+        <!--userform-->
+        <form id="userform" class="layui-form">
+            <input type="hidden" id="id" name="id">
+            <div class="layui-form-item">
+                <label class="layui-form-label">帐号</label>
+                <div class="layui-input-block">
+                    <input type="text" id="username" name="username" lay-verify="title" autocomplete="off"
+                           placeholder="请输入帐号" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">密码</label>
+                <div class="layui-input-block">
+                    <input type="password" id="password" name="password" placeholder="请输入密码" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="addsubmit">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+
+<script type="text/html" id="bar" th:inline="none">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+</script>
+
+<script type="text/javascript" th:inline="javascript">
+    layui.use('table', function () {
+        var index;
+        var table = layui.table;
+        var form = layui.form;
+        var $ = layui.jquery;
+
+        // 数据表格
+        table.render({
+            elem: '#userTableData',
+            cellMinWidth: 80,
+            url: '/user/list', //数据接口,
+            page: true, //开启分页
+            toolbar: 'default',
+            cols: [
+                [
+                    {type: 'checkbox'},
+                    {field: 'username', title: '用户名', edit: 'text'},
+                    {field: 'password', title: '密码', edit: 'text'},
+                    {field: 'logintime', title: '登陆时间'},
+                    {fixed: 'right', title: '操作', toolbar: '#bar', width: 150}
+                ]
+            ]
+        });
+
+        // 头部工具条
+        table.on('toolbar(userTableData)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                // 增
+                case 'add':
+                    index = layer.open({
+                        type: 1,
+                        title: '添加',
+                        shadeClose: true,
+                        shade: 0.8,
+                        area: ['600px', '80%'],
+                        content: $('#add'),
+                        cancel: function (index, layero) {
+                            table.reload('userTableData', {});
+                            layer.close(index);
+                            return false;
+                        }
+                    });
+                    break;
+                // 删
+                case 'delete':
+                    $.ajax({
+                        type: 'post',
+                        contentType: 'application/json',
+                        url: '/user/delete',
+                        data: JSON.stringify(checkStatus.data),
+                        success: function (data) {
+                            if (data.code == '200') {
+                                layer.msg("删除成功");
+                                table.reload('userTableData', {});
+                                layer.close(index);
+                                return false;
+                            }
+                        }
+                    });
+            }
+        });
+
+        //监听单元格编辑
+        table.on('edit(userTableData)', function (obj) {
+            var value = obj.value
+                , data = obj.data
+                , field = obj.field;
+            var record = {};
+            record.id = data.id
+            record[obj.field] = value;
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json',
+                url: '/user/update',
+                data: JSON.stringify(record),
+                success: function (data) {
+                    if (data.code == '200') {
+                        layer.msg(field + ' 字段更改为：' + value);
+                    }
+                }
+            });
+        });
+
+        // add提交
+        form.on('submit(addsubmit)', function(data){
+            var field = data.field
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json',
+                url: '/user/add',
+                data: JSON.stringify(field),
+                success: function(data) {
+                    if (data.code == 200) {
+                        table.reload('userTableData', {});
+                        layer.msg('修改成功');
+                        layer.close(index);
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+
+
+</body>
+</html>

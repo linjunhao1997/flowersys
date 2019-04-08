@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.junhow.gp.dao.FlowerImageMapper">
+  <resultMap id="BaseResultMap" type="com.junhow.gp.pojo.FlowerImageDto">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="imgid" jdbcType="INTEGER" property="imgid" />
+    <result column="src" jdbcType="VARCHAR" property="src" />
+    <result column="alt" jdbcType="VARCHAR" property="alt" />
+    <result column="defaultimg" jdbcType="VARCHAR" property="defaultimg" />
+    <result column="gmt_create" jdbcType="DATE" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="DATE" property="gmtModified" />
+  </resultMap>
+  <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select a.id,
+            a.name,
+            a.description,
+            b.imgid,
+            b.src,
+            b.alt,
+            a.gmt_create,
+            a.gmt_modified
+            from flower a left join image b
+            on a.id = b.flowerid
+            where a.name = #{name}
+  </select>
+</mapper>

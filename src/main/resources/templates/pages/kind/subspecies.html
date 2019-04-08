@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/common :: head('角色列表')"></head>
+<body>
+
+<div class="weadmin-body">
+    <table id="tableData" lay-filter="tableData"></table>
+
+    <div id="add" style="padding-top:30px;padding-right: 70px;display: none">
+        <form id="form" class="layui-form">
+            <input type="hidden" id="id" name="speciesid" th:value="${speciesid}">
+            <div class="layui-form-item">
+                <label class="layui-form-label">亚种 </label>
+                <div class="layui-input-block">
+                    <input type="text" id="name" name="name" lay-verify="title" autocomplete="off"
+                           placeholder="请输入" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">拉丁学名</label>
+                <div class="layui-input-block">
+                    <input type="text" id="latinname" name="latinname" lay-verify="title" autocomplete="off"
+                           placeholder="请输入" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="addsubmit">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<script type="text/javascript" th:inline="javascript">
+    layui.use('table', function () {
+        var index;
+        var table = layui.table;
+        var form = layui.form;
+        var $ = layui.jquery;
+
+        // 数据表格
+        table.render({
+            elem: '#tableData',
+            cellMinWidth: 80,
+            url: '/subspecies/list/[[${id}]]', //数据接口,
+            page: true, //开启分页
+            toolbar: 'default',
+            cols: [
+                [
+                    {type: 'checkbox'},
+                    {field:'id', title: 'id', hide:true},
+                    {field: 'name', title: '亚种', edit: 'text'},
+                    {field: 'latinname', title: '拉丁学名', edit: 'text'},
+                    {field: 'parengId', title: '上级', edit: 'text'},
+                ]
+            ]
+        });
+
+        // 头部工具条
+        table.on('toolbar(tableData)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                // 增
+                case 'add':
+                    index = layer.open({
+                        type: 1,
+                        title: 'subspecies',
+                        shadeClose: true,
+                        maxmin: true,
+                        shade: 0.8,
+                        area: ['90%', '90%'],
+                        content: $('#add'),
+                        cancel: function (index, layero) {
+                            table.reload('tableData', {});
+                            layer.close(index);
+                            return false;
+                        }
+                    });
+                    break;
+                // 删
+                case 'delete':
+                    $.ajax({
+                        type: 'post',
+                        contentType: 'application/json',
+                        url: '/subspecies/delete',
+                        data: JSON.stringify(checkStatus.data),
+                        success: function (data) {
+                            if (data.code == '200') {
+                                layer.msg("删除成功");
+                                table.reload('tableData', {});
+                                return false;
+                            }
+                        }
+                    });
+            }
+        });
+
+        //监听单元格编辑
+        table.on('edit(tableData)', function (obj) {
+            var value = obj.value
+                , data = obj.data
+                , field = obj.field;
+            var record = {};
+            record.id = data.id
+            record[obj.field] = value;
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json',
+                url: '/subspecies/update',
+                data: JSON.stringify(record),
+                success: function (data) {
+                    if (data.code == '200') {
+                        layer.msg(field + ' 字段更改为：' + value);
+                    }
+                }
+            });
+        });
+
+        // add提交
+        form.on('submit(addsubmit)', function(data){
+            var field = data.field
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json',
+                url: '/subspecies/add',
+                data: JSON.stringify(field),
+                success: function(data) {
+                    if (data.code == 200) {
+                        layer.msg("添加成功")
+                        table.reload('tableData', {});
+                    }
+                }
+            });
+            return false;
+        });
+
+        form.render();
+    });
+</script>
+
+
+</body>
+</html>

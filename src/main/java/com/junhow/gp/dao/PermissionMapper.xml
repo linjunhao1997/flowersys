@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.junhow.gp.dao.PermissionMapper">
+  <resultMap id="BaseResultMap" type="com.junhow.gp.pojo.Permission">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="permission" jdbcType="VARCHAR" property="permission" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="valid" jdbcType="BIT" property="valid" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, permission, remark, `valid`
+  </sql>
+  <select id="getPermissionByUserName" parameterType="java.lang.String" resultType="com.junhow.gp.pojo.Permission">
+    select permission from permission, role, user_role, role_permission, user where permission.id = role_permission.permissionid
+    and role_permission.roleid = role.id and role.id = user_role.roleid and user_role.userid = user.id and user.username = #{username}
+  </select>
+</mapper>

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>title</title>
+    <link rel="stylesheet" th:href="@{/lib/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}">
+
+</head>
+<script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
+<script th:src="@{/lib/jquery/jquery-3.3.1.min.js}" charset="utf-8"></script>
+<script th:src="@{/lib/bootstrap/js/bootstrap.min.js}" charset="utf-8"></script>
+<body>
+    <div th:each="m : ${imgList}" class="col-lg-8 col-lg-offset-2" >
+        <div class="thumbnail">
+            <img th:attr="src=${m.src}" alt="...">
+            <div class="caption">
+                <button th:id = "${m.imgid}" class="btn btn-warning" style="display:block;margin:0 auto" onclick="deleteImage()">删除</button>
+            </div>
+        </div>
+    </div>
+    <div class="layui-upload">
+        <button type="button" class="layui-btn" id="test1" style="display:block;margin:0 auto">上传图片</button>
+        <div class="layui-upload-list">
+            <img class="layui-upload-img" id="demo1">
+            <p id="demoText"></p>
+        </div>
+    </div>
+    <!-- <div th:each="m : ${imgList}">&lt;!&ndash; 其中m是个临时变量，像for(User u : userList)那样中的u&ndash;&gt;
+         <img  th:attr="src=${m.src}" />
+         <button class="layui-btn layui-btn-danger">删除图片</button>
+     </div>-->
+</body>
+<script type="text/javascript" th:inline="javascript">
+    var deleteImage = function() {
+        var currentNode = event.target;
+        var id = currentNode.id;
+        var removedNode = currentNode.parentNode.parentNode;
+        var parentNode = removedNode.parentNode;
+        parentNode.removeChild(removedNode);
+        $.ajax({
+            type: 'post',
+            contentType: 'application/json',
+            url: '/image/delete',
+            data: JSON.stringify(id),
+            success: function (data) {
+                if (data.code == '200') {
+                    layer.msg("删除成功");
+                    return false;
+                }
+            }
+        });
+    };
+    layui.use('upload', function() {
+        var upload = layui.upload;
+        var uploadInst = upload.render({
+            elem: '#test1',
+            accept: 'file'
+            ,url: '/image/upload/[[${imgList[0].id}]]'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                //如果上传失败
+                if(res.code != '200'){
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+    });
+</script>
+</html>

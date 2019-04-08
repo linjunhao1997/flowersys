@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/common :: head('需求列表')"></head>
+<body>
+
+<div class="weadmin-body">
+    <table id="tableData" lay-filter="tableData"></table>
+
+    <div id="edit" style="padding-top:30px;padding-right: 70px;display: none">
+        <form id="aform"class="layui-form" action="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">紧急程度</label>
+                <div class="layui-input-block" style="width: 200px;">
+                    <select id="priority" name="priority" lay-filter="priority">
+                        <option value="">请选择一项</option>
+                        <option value="低">低</option>
+                        <option value="中">中</option>
+                        <option value="高">高</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">是否解决</label>
+                <div class="layui-input-block" style="width: 200px;">
+                    <select id="resolved" name="resolved" lay-filter="resolved">
+                        <option value="">请选择一项</option>
+                        <option value="未解决">未解决</option>
+                        <option value="已解决">已解决</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="editsubmit">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/html" id="bar" th:inline="none">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">操作</a>
+</script>
+
+<script type="text/javascript" th:inline="javascript">
+    layui.use('table', function () {
+        var index;
+        var table = layui.table;
+        var form = layui.form;
+        var $ = layui.jquery;
+
+        // 数据表格
+        table.render({
+            elem: '#tableData',
+            cellMinWidth: 80,
+            url: '/proposal/list', //数据接口,
+            page: true, //开启分页
+            toolbar: 'default',
+            cols: [
+                [
+                    {type: 'checkbox'},
+                    {field: 'bug', title: 'bug'},
+                    {field: 'proposal', title: '需求建议'},
+                    {field: 'username', title: '提交人'},
+                    {field: 'email', title: '联系邮箱'},
+                    {field: 'priority', title: '紧急程度'},
+                    {field: 'resolved', title: '是否解决'},
+                    {fixed: 'right', title: '操作', toolbar: '#bar', width: 150}
+                ]
+            ]
+        });
+        var id;
+        table.on('tool(tableData)', function (obj) {
+            id = obj.data.id;
+            switch (obj.event) {
+                case 'edit':
+                    index = layer.open({
+                        type: 1,
+                        title: '调整状态',
+                        shadeClose: true,
+                        shade: 0.8,
+                        maxmin: true,
+                        area: ['50%', '50%'],
+                        content: $('#edit'),
+                        cancel: function (index, layero) {
+                            table.reload('tableData', {});
+                            layer.close(index);
+                            return false;
+                        }
+                    });
+                    break;
+            }
+        });
+
+        form.render();
+        form.on('submit(editsubmit)', function(data){
+            var field = data.field
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json',
+                url: '/proposal/update/'+ id,
+                data: JSON.stringify(field),
+                success: function(data) {
+                    if (data.code == 200) {
+                        table.reload('tableData', {});
+                        layer.msg('修改成功');
+                        layer.close(index);
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+
+
+</body>
+</html>

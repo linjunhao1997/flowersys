@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.junhow.gp.dao.ImageMapper">
+  <resultMap id="BaseResultMap" type="com.junhow.gp.pojo.Image">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="src" jdbcType="VARCHAR" property="src" />
+    <result column="alt" jdbcType="VARCHAR" property="alt" />
+    <result column="flowerid" jdbcType="INTEGER" property="flowerid" />
+    <result column="defaultimg" jdbcType="VARCHAR" property="defaultimg" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+</mapper>

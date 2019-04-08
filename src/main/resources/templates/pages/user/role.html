@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/common :: head('角色列表')"></head>
+<body>
+
+<div class="weadmin-body">
+    <table id="roleTableData" lay-filter="roleTableData"></table>
+
+    <div id="roleAdd" style="padding-top:30px;padding-right: 70px;display: none">
+        <!--userform-->
+        <form id="roleform" class="layui-form">
+            <input type="hidden" id="id" name="id">
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色</label>
+                <div class="layui-input-block">
+                    <input type="text" id="role" name="role" lay-verify="title" autocomplete="off"
+                           placeholder="请输入角色" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">备注</label>
+                <div class="layui-input-block">
+                    <textarea id="remark" name="remark" placeholder="请输入备注" class="layui-textarea"></textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">是否有效</label>
+                <div class="layui-input-inline" style="width: 200px;">
+                    <select id="valid" name="valid" lay-filter="valid" >
+                        <option value="0">无效</option>
+                        <option value="1">有效</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="addsubmit">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script type="text/html" id="bar" th:inline="none">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">操作</a>
+</script>
+
+<script type="text/javascript" th:inline="javascript">
+    layui.use('table', function () {
+        var index;
+        var table = layui.table;
+        var form = layui.form;
+        var $ = layui.jquery;
+
+        // 数据表格
+        table.render({
+            elem: '#roleTableData',
+            cellMinWidth: 80,
+            url: '/role/list', //数据接口,
+            page: true, //开启分页
+            toolbar: 'default',
+            cols: [
+                [
+                    {type: 'checkbox'},
+                    {field: 'role', title: '角色', edit: 'text'},
+                    {field: 'reamrk', title: '备注', edit: 'text'},
+                    {field: 'valid', title: '是否有效', edit: 'text'},
+                    {fixed: 'right', title: '操作', toolbar: '#bar', width: 150}
+                ]
+            ]
+        });
+
+        // 头部工具条
+        table.on('toolbar(roleTableData)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                // 增
+                case 'add':
+                    index = layer.open({
+                        type: 1,
+                        title: '添加',
+                        shadeClose: true,
+                        shade: 0.8,
+                        area: ['600px', '80%'],
+                        content: $('#roleAdd'),
+                        cancel: function (index, layero) {
+                            table.reload('roleTableData', {});
+                            layer.close(index);
+                            return false;
+                        }
+                    });
+                    break;
+                // 删
+                case 'delete':
+                    $.ajax({
+                        type: 'post',
+                        contentType: 'application/json',
+                        url: '/role/delete',
+                        data: JSON.stringify(checkStatus.data),
+                        success: function (data) {
+                            if (data.code == '200') {
+                                layer.msg("删除成功");
+                                table.reload('roleTableData', {});
+                                layer.close(index);
+                                return false;
+                            }
+                        }
+                    });
+            }
+        });
+
+        //监听单元格编辑
+        table.on('edit(roleTableData)', function (obj) {
+            var value = obj.value
+                , data = obj.data
+                , field = obj.field;
+            var record = {};
+            record.id = data.id
+            record[obj.field] = value;
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json',
+                url: '/role/update',
+                data: JSON.stringify(record),
+                success: function (data) {
+                    if (data.code == '200') {
+                        layer.msg(field + ' 字段更改为：' + value);
+                    }
+                }
+            });
+        });
+
+        // add提交
+        form.on('submit(addsubmit)', function(data){
+            var field = data.field
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json',
+                url: '/role/add',
+                data: JSON.stringify(field),
+                success: function(data) {
+                    if (data.code == 200) {
+                        table.reload('roleTableData', {});
+                        layer.msg('修改成功');
+                        layer.close(index);
+                    }
+                }
+            });
+            return false;
+        });
+
+        form.render();
+    });
+</script>
+
+
+</body>
+</html>

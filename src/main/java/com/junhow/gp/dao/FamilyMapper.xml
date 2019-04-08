@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.junhow.gp.dao.FamilyMapper">
+  <resultMap id="BaseResultMap" type="com.junhow.gp.pojo.Family">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="orderid" jdbcType="INTEGER" property="orderid" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+    <result column="latinname" jdbcType="VARCHAR" property="latinname" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, `name`, orderid, gmt_create, gmt_modified
+  </sql>
+  <select id="selectByTypeName" parameterType="java.lang.String" resultMap="BaseResultMap">
+  select
+  <include refid="Base_Column_List" />
+  from family
+  where orderid = (select id from flowerdb.t_order where name=#{ordername, jdbcType=VARCHAR})
+  </select>
+</mapper>

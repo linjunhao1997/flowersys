@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>花卉字典</title>
+    <link rel="stylesheet" th:href="@{/lib/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}">
+    <style>
+        #hot_div {
+            height: 300px;
+        }
+        #content {
+            height: 100px;
+        }
+        #main form{
+            margin-top:50px;
+        }
+        #name {
+            margin-left: 160px;
+            width:350px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2 padding-top-bottom">
+                最全的花卉百科全书
+            </div>
+            <div class="col-lg-6 text-right padding-top-bottom col-lg-offset-4">
+                <a class="text-right"target="_blank" href="propose.shtml">提交需求建议</a>
+            </div>
+        </div>
+        <div id="hot_div" class="row col-lg-6 col-lg-offset-3">
+            <div class="layui-carousel" id="hot">
+                <div carousel-item>
+                    <div>条目1</div>
+                    <div>条目2</div>
+                    <div>条目3</div>
+                    <div>条目4</div>
+                    <div>条目5</div>
+                </div>
+            </div>
+        </div>
+        <div id="content" class="row col-lg-8 col-lg-offset-2">
+            <form class="aform"  action="">
+                <input id="name" name="name"type="text" placeholder="请输入花名">
+                <button type="submit" formtarget="_blank" class="btn btn-default">查找</button>
+            </form>
+        </div>
+    </div>
+
+    </form>
+    <script th:src="@{/lib/jquery/jquery-3.3.1.min.js}" charset="utf-8"></script>
+    <script th:src="@{/lib/bootstrap/js/bootstrap.min.js}" charset="utf-8"></script>
+    <script th:src="@{/lib/layui/layui.all.js}" charset="utf-8"></script>
+</body>
+<script th:inline="none">
+    layui.use('carousel', function(){
+        var carousel = layui.carousel;
+        //建造实例
+        carousel.render({
+            elem: '#hot'
+            ,width: '100%' //设置容器宽度
+            ,arrow: 'always' //始终显示箭头
+            //,anim: 'updown' //切换动画方式
+        });
+    });
+</script>
+</html>

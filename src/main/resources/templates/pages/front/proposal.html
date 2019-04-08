@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/common :: head('需求建议')"></head>
+<body>
+<div id="add" style="padding-top:30px;padding-right: 70px;">
+    <form id="aform"class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">bug</label>
+            <div class="layui-input-block">
+                <textarea name="bug" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">需求建议</label>
+            <div class="layui-input-block">
+                <textarea name="proposal" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">您的称呼</label>
+            <div class="layui-input-inline">
+                <input type="text" name="username" required  lay-verify="required" placeholder="请输入花名" autocomplete="off" class="layui-input" style="width: 300px;">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">您的手机</label>
+            <div class="layui-input-inline">
+                <input type="text" name="contactnumer" required  lay-verify="required" placeholder="请输入花名" autocomplete="off" class="layui-input" style="width: 300px;">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">您的邮箱</label>
+            <div class="layui-input-block">
+                <textarea name="email" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="insertaction">提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+<script type="text/javascript" th:inline="javascript">
+    var $ = layui.$;
+    var form = layui.form;
+    form.render();
+    form.on('submit(insertaction)', function(data){
+        var field = data.field
+        $.ajax({
+            type: 'post',
+            contentType: 'application/json',
+            url: '/proposal/add',
+            data: JSON.stringify(field),
+            success: function(data) {
+                if (data.code == "200") {
+                    layer.confirm('您已提交成功', {
+                        btn: ['返回'] //按钮
+                    }, function(){
+                       location.href = './index.shtml';
+                    });
+                }
+            }
+        });
+        return false;
+    });
+
+</script>
+</html>

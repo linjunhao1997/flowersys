@@ -4,6 +4,14 @@
   <resultMap id="BaseResultMap" type="com.junhow.gp.pojo.FlowerImageDto">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
+      <result column="phylumname" jdbcType="VARCHAR" property="phylumname" />
+      <result column="classname" jdbcType="VARCHAR" property="classname" />
+      <result column="ordername" jdbcType="VARCHAR" property="ordername" />
+      <result column="familyname" jdbcType="VARCHAR" property="familyname" />
+      <result column="genusname" jdbcType="VARCHAR" property="genusname" />
+      <result column="speciesname" jdbcType="VARCHAR" property="speciesname" />
+      <result column="subspeciesname" jdbcType="VARCHAR" property="subspeciesname" />
+      <result column="latinname" jdbcType="VARCHAR" property="latinname" />
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="imgid" jdbcType="INTEGER" property="imgid" />
     <result column="src" jdbcType="VARCHAR" property="src" />
@@ -14,6 +22,14 @@
   </resultMap>
   <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
     select a.id,
+             a.phylumname,
+              a.classname,
+               a.ordername,
+                a.familyname,
+                 a.genusname,
+                  a.speciesname,
+                   a.subspeciesname,
+                    a.latinname,
             a.name,
             a.description,
             b.imgid,
@@ -23,6 +39,6 @@
             a.gmt_modified
             from flower a left join image b
             on a.id = b.flowerid
-            where a.name = #{name}
+            where a.name like  CONCAT(#{name},'%')
   </select>
 </mapper>

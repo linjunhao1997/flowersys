@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,6 +78,9 @@ public class ClassController {
      */
     @PostMapping("/add")
     public ResponseBean add(@RequestBody Class aClass) {
+        Date date = new Date();
+        aClass.setGmtCreate(date);
+        aClass.setGmtModified(date);
         int count = classService.insert(aClass);
         if (count <= 0) {
             throw new CustomException("新增失败(Insert Failure)");

@@ -65,8 +65,31 @@
                     {field: 'proposal', title: '需求建议'},
                     {field: 'username', title: '提交人'},
                     {field: 'email', title: '联系邮箱'},
-                    {field: 'priority', title: '紧急程度'},
-                    {field: 'resolved', title: '是否解决'},
+                    {field: 'priority', title: '紧急程度',templet: function(d){
+                            return function(){
+                                switch (d.resolved) {
+                                    case  '未解决':
+                                        if (d.priority === '低') {
+                                            return '<span style="color: #1E9FFF;">'+ d.priority + '</span>';
+                                        } else if (d.priority === '中') {
+                                            return '<span style="color: #eb9316;">'+ d.priority + '</span>';
+                                        } else if (d.priority === '高') {
+                                            return '<span style="color: #c9302c;">'+ d.priority + '</span>';
+                                        } else {
+                                            return '<span>' + d.priority + '</span>';
+                                        }
+                                        break;
+                                    case  '已解决':
+                                        return '<span style="color: #67b168;">'+ d.priority + '</span>'
+                                        break;
+                                    default:
+                                        return ""
+                                };
+                            }()
+                        }},
+                    {field: 'resolved', title: '是否解决', templet: function(d){
+                            return d.resolved ==='已解决'? '<span style="color: #67b168;">'+ d.resolved +'</span>': '<span style="color: #c9302c;">'+ d.resolved +'</span>'
+                        }},
                     {fixed: 'right', title: '操作', toolbar: '#bar', width: 150}
                 ]
             ]
@@ -76,6 +99,26 @@
             id = obj.data.id;
             switch (obj.event) {
                 case 'edit':
+                    console.log(obj.data.priority);
+                    var priorityelement = document.getElementById('priority');
+                    var options = priorityelement.getElementsByTagName("option");
+                    console.log(options);
+                    for (var i = 0; i < options.length; i++) {
+                        if (options[i].value === obj.data.priority) {
+                            options[i].setAttribute("selected", "selected");
+                            break;
+                        }
+                    }
+                    priorityelement.value = obj.data.priority;
+                    var resolvedelement = document.getElementById('resolved');
+                    var options = resolvedelement.getElementsByTagName("option");
+                    for (var i = 0; i < options.length; i++) {
+                        if (options[i].value === obj.data.resolved) {
+                            options[i].setAttribute("selected", "selected");
+                            break;
+                        }
+                    }
+                    resolvedelement.value = obj.data.resolved;
                     index = layer.open({
                         type: 1,
                         title: '调整状态',
@@ -90,7 +133,29 @@
                             return false;
                         }
                     });
+                    form.render('select');
                     break;
+            }
+        });
+        // 头部工具条
+        table.on('toolbar(tableData)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                // 删
+                case 'delete':
+                    $.ajax({
+                        type: 'post',
+                        contentType: 'application/json',
+                        url: '/proposal/delete',
+                        data: JSON.stringify(checkStatus.data),
+                        success: function (data) {
+                            if (data.code == '200') {
+                                layer.msg("删除成功");
+                                table.reload('tableData', {});
+                                return false;
+                            }
+                        }
+                    });
             }
         });
 

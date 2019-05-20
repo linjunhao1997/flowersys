@@ -33,6 +33,23 @@
         </form>
     </div>
 
+    <div id="edit" style="padding-top:30px;padding-right: 70px;display: none">
+        <form id="aform"class="layui-form" action="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">分配角色</label>
+                <div id="hasRoles" class="layui-input-block">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="editsubmit">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
 </div>
 
 
@@ -64,6 +81,72 @@
                 ]
             ]
         });
+
+
+        var id;
+        table.on('tool(userTableData)', function (obj) {
+            id = obj.data.id;
+
+
+            switch (obj.event) {
+                case 'edit':
+                    $('#hasRoles').empty();
+                    index = layer.open({
+                        type: 1,
+                        title: '角色修改',
+                        shadeClose: true,
+                        shade: 0.8,
+                        maxmin: true,
+                        area: ['50%', '50%'],
+                        content: $('#edit'),
+                        cancel: function (index, layero) {
+                            table.reload('tableData', {});
+                            layer.close(index);
+                            return false;
+                        }
+                    });
+                    $.ajax({
+                        type: 'post',
+                        contentType: 'application/json',
+                        url: '/role/getAllRole',
+                        success: function (data) {
+                            if (data.code == '200'){
+                                    var roles = data.data;
+                                    for (var i = 0; i < roles.length; i++) {
+                                        $('#hasRoles').append(`
+                                 <input id="${roles[i].id}" type="checkbox" name="roles[${roles[i].id}]" title="${roles[i].role}" value="${roles[i].id}">
+                            `);
+                                    }
+                                $.ajax({
+                                    type: 'post',
+                                    contentType: 'application/json',
+                                    url: '/role/getRolesByUserId/' + id,
+                                    success: function (selectdata) {
+                                        if (selectdata.code == '200'){
+                                            var roles = selectdata.data;
+                                            for (var i = 0; i < roles.length; i++) {
+                                                var  input = document.getElementById((roles[i].id).toString())
+                                                if (input) {
+                                                    input.setAttribute("checked","checked");
+                                                }
+                                            }
+                                            form.render();
+                                        }
+                                    }
+                                });
+
+
+                                }
+
+                        }
+                    });
+
+                    break;
+
+            }
+        });
+
+
 
         // 头部工具条
         table.on('toolbar(userTableData)', function (obj) {
@@ -115,7 +198,7 @@
             $.ajax({
                 type: 'post',
                 contentType: 'application/json',
-                url: '/user/update',
+                url: '/user/update/'+ record.id,
                 data: JSON.stringify(record),
                 success: function (data) {
                     if (data.code == '200') {
@@ -132,6 +215,23 @@
                 type: 'post',
                 contentType: 'application/json',
                 url: '/user/add',
+                data: JSON.stringify(field),
+                success: function(data) {
+                    if (data.code == 200) {
+                        table.reload('userTableData', {});
+                        layer.msg('修改成功');
+                        layer.close(index);
+                    }
+                }
+            });
+            return false;
+        });
+        form.on('submit(editsubmit)', function(data){
+            var field = data.field
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json',
+                url: '/user/role/setUserRole/'+ id,
                 data: JSON.stringify(field),
                 success: function(data) {
                     if (data.code == 200) {

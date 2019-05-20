@@ -28,7 +28,7 @@ import java.util.Map;
 public class ImageController {
 
     private final static String REALFILEPATH = "E:/upload/";
-    private final static String VIRTUALFIILEPATH = "http://localhost:8080/upload/";
+    private final static String VIRTUALFIILEPATH = "http://localhost:8081/upload/";
     private final IImageService imageService;
 
     @Autowired

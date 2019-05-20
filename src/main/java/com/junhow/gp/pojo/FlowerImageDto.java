@@ -12,8 +12,39 @@ import java.util.Date;
  */
 public class FlowerImageDto {
     private Integer id;
+    @Getter
+    @Setter
+    private String phylumname;
+
+    @Getter
+    @Setter
+    private String classname;
+
+    @Getter
+    @Setter
+    private String ordername;
+
+    @Getter
+    @Setter
+    private String familyname;
+
+    @Getter
+    @Setter
+    private String genusname;
+
+    @Getter
+    @Setter
+    private String speciesname;
+
+    @Getter
+    @Setter
+    private String subspeciesname;
 
     private String name;
+
+    @Getter
+    @Setter
+    private String latinname;
 
     private String description;
 

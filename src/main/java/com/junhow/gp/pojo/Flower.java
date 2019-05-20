@@ -1,5 +1,7 @@
 package com.junhow.gp.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 import javax.persistence.*;
 
@@ -32,9 +34,11 @@ public class Flower {
 
     private String valid;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     @Column(name = "gmt_create")
     private Date gmtCreate;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     @Column(name = "gmt_modified")
     private Date gmtModified;
 

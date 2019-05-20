@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * 通用访问匹配页面跳转
- * @author Wang926454
+ * @author linjunhao
  * @date 2019/1/24 19:27
  */
 @Controller
@@ -17,7 +17,7 @@ public class IndexController {
      * 通用页面跳转
      * @param url
      * @return java.lang.String
-     * @author Wang926454
+     * @author linjunhao
      * @date 2019/1/24 19:27
      */
     @RequestMapping("{url}.shtml")
@@ -30,7 +30,7 @@ public class IndexController {
      * @param module
      * @param url
      * @return java.lang.String
-     * @author Wang926454
+     * @author linjunhao
      * @date 2019/1/24 19:27
      */
     @RequestMapping("{module}/{url}.shtml")
@@ -43,7 +43,7 @@ public class IndexController {
      * @param module
      * @param url
      * @return java.lang.String
-     * @author Wang926454
+     * @author linjunhao
      * @date 2019/1/25 19:35
      */
     @RequestMapping("{module}/{module2}/{url}.shtml")
@@ -75,6 +75,11 @@ public class IndexController {
     @RequestMapping("index")
     public ModelAndView index(ModelAndView mv) {
         mv.setViewName("pages/front/index.html");
+        return mv;
+    }
+    @RequestMapping("index/proposal")
+    public ModelAndView proposal(ModelAndView mv) {
+        mv.setViewName("pages/front/proposal.html");
         return mv;
     }
 

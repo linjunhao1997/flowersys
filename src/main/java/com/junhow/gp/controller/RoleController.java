@@ -1,6 +1,7 @@
 package com.junhow.gp.controller;
 
 import com.junhow.gp.common.ResponseBean;
+import com.junhow.gp.dao.RoleMapper;
 import com.junhow.gp.exception.CustomException;
 import com.junhow.gp.pojo.Role;
 import com.junhow.gp.service.IRoleService;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,10 +27,13 @@ public class RoleController {
 
     private final IRoleService roleService;
 
+
     @Autowired
     public RoleController(IRoleService roleService) {
         this.roleService = roleService;
     }
+    @Autowired
+    public RoleMapper roleDao;
 
     /**
      * 列表
@@ -110,6 +115,17 @@ public class RoleController {
             }
         }
         return new ResponseBean(200, "删除成功(Delete Success)", null);
+    }
+    @PostMapping("/getAllRole")
+    public ResponseBean getAllRole() {
+        List<Role> roles = roleService.selectAll();
+        return new ResponseBean(200, null, roles);
+    }
+
+    @RequestMapping("/getRolesByUserId/{id}")
+    public ResponseBean getRolesByUserId(@PathVariable("id") Integer id) {
+        List<Role> roles = roleDao.getRolesByUserId(id);
+        return new ResponseBean(200, null, roles);
     }
 
 }

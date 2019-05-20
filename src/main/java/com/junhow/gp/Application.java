@@ -1,11 +1,13 @@
 package com.junhow.gp;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
 /**
  *
- * @author Wang926454
+ * @author linjunhao
  * @date 2018/11/16 19:29
  */
 @SpringBootApplication

@@ -2,7 +2,7 @@ package com.junhow.gp.exception;
 
 /**
  * 自定义异常(CustomException)
- * @author Wang926454
+ * @author linjunhao
  * @date 2018/8/30 13:59
  */
 public class CustomException extends RuntimeException {

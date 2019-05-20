@@ -1,6 +1,5 @@
 server:
-    port: 8080
-
+    port: 8081
 spring:
     servlet:
         multipart:
@@ -8,25 +7,27 @@ spring:
     datasource:
         name: SpringBootQuartz
         url: jdbc:mysql://127.0.0.1:3306/flowerdb?serverTimezone=GMT%2B8&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+
+        #url: jdbc:mysql://120.79.149.233:3306/flowerdb
         username: root
         password: mysql
         # 使用Druid数据源
-        type: com.alibaba.druid.pool.DruidDataSource
+        type: com.zaxxer.hikari.util.DriverDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
-        druid:
-            filters: stat
-            maxActive: 20
-            initialSize: 1
-            maxWait: 60000
-            minIdle: 1
-            timeBetweenEvictionRunsMillis: 60000
-            minEvictableIdleTimeMillis: 300000
-            validationQuery: select 'x'
-            testWhileIdle: true
-            testOnBorrow: false
-            testOnReturn: false
-            poolPreparedStatements: true
-            maxOpenPreparedStatements: 20
+ #       druid:
+ #           filters: stat
+ #           maxActive: 20
+ #           initialSize: 1
+ #           maxWait: 60000
+ #           minIdle: 1
+ #           timeBetweenEvictionRunsMillis: 60000
+ #           minEvictableIdleTimeMillis: 300000
+ #           validationQuery: select 'x'
+ #           testWhileIdle: true
+ #           testOnBorrow: false
+ #           testOnReturn: false
+ #           poolPreparedStatements: true
+ #           maxOpenPreparedStatements: 20
     # 开启thymeleaf必须关闭404交给异常处理器处理配置
     # 不然无法访问静态资源
     thymeleaf:

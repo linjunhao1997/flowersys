@@ -17,4 +17,7 @@
   <select id="getRolesByUserName" parameterType="java.lang.String" resultType="com.junhow.gp.pojo.Role">
     select role from role, user, user_role where role.id = user_role.roleid and user.id = user_role.userid and user.username =#{username}
   </select>
+  <select id="getRolesByUserId" parameterType="java.lang.Integer" resultType="com.junhow.gp.pojo.Role">
+    select role.id, role.role from role, user, user_role where role.id = user_role.roleid and user.id = user_role.userid and user.id = #{id}
+  </select>
 </mapper>

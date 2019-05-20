@@ -18,13 +18,9 @@
 					<dl class="layui-nav-child">
 						<!-- 二级菜单 -->
 						<dd>
-							<a onclick="WeAdminShow('资讯','https://note.wang64.cn')"><i class="iconfont">&#xe6a2;</i>资讯</a>
-						</dd>
-						<dd>
-							<a onclick="WeAdminShow('搜索','http://www.baidu.com')"><i class="iconfont">&#xe6a8;</i>搜索</a>
-						</dd>
-						<dd>
-							<a onclick="WeAdminShow('留言','https://msg.wang64.cn')"><i class="iconfont">&#xe6b8;</i>留言</a>
+							<a id="message" onclick="WeAdminShow('消息','./pages/proposal/proposal.shtml');remove(this)">
+								<i class="iconfont">&#xe6a2;</i>待审核
+							</a>
 						</dd>
 					</dl>
 				</li>
@@ -38,7 +34,7 @@
 							<a onclick="WeAdminShow('个人信息','https://wang64.cn')">个人主页</a>
 						</dd>-->
 						<dd>
-							<a onclick="WeAdminShow('切换帐号','./login.shtml')">切换帐号</a>
+							<a onclick="WeAdminShow('切换帐号','./login.shtml');">切换帐号</a>
 						</dd>
 						<dd>
 							<a class="loginout" href="login.shtml">退出</a>
@@ -269,4 +265,47 @@
         <li data-type="all">关闭所有</li>
     </ul>
 
+	<script type="text/javascript" th:inline="javascript">
+        function remove(obj){
+            obj.removeChild(obj.lastElementChild);
+		};
+
+        function Socket(url, requestMessage) {
+            if (url) {
+                var ws = new WebSocket(url);
+                ws.onopen = function() {
+                    ws.send(requestMessage);
+                }
+                ws.onmessage = function (evt) {
+                    var received_msg = evt.data;
+                    var element = document.getElementById("newMessage");
+                    element.innerText = Number(element.innerText) + Number(received_msg);
+                }
+                ws.onclose = function() {
+                    console.log("close");
+                }
+            }
+        }
+
+		window.onload = function() {
+            var $ = layui.jquery;
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json',
+                url: '/proposal/message',
+                success: function (data) {
+                    if (data.code == '200') {
+                        var element = document.createElement("span");
+                        element.id = "newMessage";
+                        element.classList.add("layui-badge");
+                        element.innerText = data.data;
+                        var a = document.getElementById('message').appendChild(element);
+						}
+                    }
+                })
+            var socket = new Socket("ws://localhost:8081/echo/admin");
+            };
+
+
+	</script>
 </html>

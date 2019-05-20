@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * 这个也jdk自带的一个类，是基于线程池设计的定时任务类，每个调度任务都会分配到线程池中的一个线程去执行
  * 也就是说，任务是并发执行，互不影响
- * @author Wang926454
+ * @author linjunhao
  * @date 2019/1/18 13:57
  */
 public class TestScheduledExecutorService {

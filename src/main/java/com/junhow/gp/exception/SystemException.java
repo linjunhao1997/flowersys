@@ -2,7 +2,7 @@ package com.junhow.gp.exception;
 
 /**
  * 系统异常(SystemException)
- * @author Wang926454
+ * @author linjunhao
  * @date 2018/8/30 13:59
  */
 public class SystemException extends RuntimeException {

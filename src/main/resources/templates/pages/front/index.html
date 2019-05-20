@@ -5,69 +5,108 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>花卉字典</title>
-    <link rel="stylesheet" th:href="@{/lib/bootstrap/css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="bulma-0.7.4/css/bulma.min.css">
+    <script src="lib/jquery/jquery-3.3.1.min.js"></script>
     <style>
-        #hot_div {
-            height: 300px;
-        }
-        #content {
-            height: 100px;
-        }
-        #main form{
-            margin-top:50px;
-        }
-        #name {
-            margin-left: 160px;
-            width:350px;
-        }
-
+    #search {
+        width:250px;
+        margin-top: 300px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    #content {
+        margin-top: 200px;
+    }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-2 padding-top-bottom">
-                最全的花卉百科全书
-            </div>
-            <div class="col-lg-6 text-right padding-top-bottom col-lg-offset-4">
-                <a class="text-right"target="_blank" href="propose.shtml">提交需求建议</a>
-            </div>
-        </div>
-        <div id="hot_div" class="row col-lg-6 col-lg-offset-3">
-            <div class="layui-carousel" id="hot">
-                <div carousel-item>
-                    <div>条目1</div>
-                    <div>条目2</div>
-                    <div>条目3</div>
-                    <div>条目4</div>
-                    <div>条目5</div>
-                </div>
-            </div>
-        </div>
-        <div id="content" class="row col-lg-8 col-lg-offset-2">
-            <form class="aform"  action="">
-                <input id="name" name="name"type="text" placeholder="请输入花名">
-                <button type="submit" formtarget="_blank" class="btn btn-default">查找</button>
-            </form>
-        </div>
+<div> <a href="index/proposal">提交需求建议</a></div>
+<div id="search">
+    <div class="field is-grouped">
+        <p class="control">
+            <input id="name" name="name" class="input" type="text" placeholder="输入花名">
+        </p>
+        <p class="control">
+            <a id="s" class="button is-info">
+                查找
+            </a>
+        </p>
     </div>
+</div>
+<div id = "content">
 
-    </form>
-    <script th:src="@{/lib/jquery/jquery-3.3.1.min.js}" charset="utf-8"></script>
-    <script th:src="@{/lib/bootstrap/js/bootstrap.min.js}" charset="utf-8"></script>
-    <script th:src="@{/lib/layui/layui.all.js}" charset="utf-8"></script>
+</div>
+
+
 </body>
 <script th:inline="none">
-    layui.use('carousel', function(){
-        var carousel = layui.carousel;
-        //建造实例
-        carousel.render({
-            elem: '#hot'
-            ,width: '100%' //设置容器宽度
-            ,arrow: 'always' //始终显示箭头
-            //,anim: 'updown' //切换动画方式
+    function Socket(url, requestMessage) {
+        if (url) {
+            var ws = new WebSocket(url);
+            ws.onopen = function() {
+                ws.send(requestMessage);
+            }
+            ws.onmessage = function (evt) {
+                var received_msg = evt.data;
+            }
+            ws.onclose = function() {
+                console.log("close");
+            }
+
+        }
+    }
+
+    window.onload = function() {
+        var socket = new Socket("ws://localhost:8081/echo/user");
+    }
+    var s = document.getElementById('s');
+    s.onclick = function() {
+        $('#content').empty();
+        var name = $('#name').val();
+        $.ajax({
+            type: 'post',
+            contentType: 'application/json',
+            url: '/flower/search',
+            data: JSON.stringify({
+                "name": name
+            }),
+            success: function(data) {
+                console.log(data);
+                for (var i = 0; i < data.length; i++) {
+                    $('#content').append(`
+                <div class="columns">
+                    <div class="column is-half is-offset-one-quarter" >
+                     <div class="card">
+                         <div class="card-image">
+                           <img src="${data[i].src}" alt="${data[i].alt}">
+                         </div>
+                         <div id = "kind" style="color:darkgrey">
+                         <p>门: <span>${data[i].phylumname}</span></p>
+                         <p>纲: <span>${data[i].classname}</span></p>
+                         <p>目: <span>${data[i].ordername}</span></p>
+                         <p>科: <span>${data[i].familyname}</span></p>
+                         <p>属: <span>${data[i].genusname}</span></p>
+                         <p>种: <span>${data[i].speciesname}</span></p>
+                         <p>亚种: <span>${data[i].subspeciesname}</span></p>
+                         <br>
+                         </div>
+                         <div>
+                          <p>${data[i].description}</p>
+                         </div>
+                         </div>
+
+                         </div>
+                         </div>
+                    </div>
+                 </div>
+                `);
+                }
+
+            }
         });
-    });
+    }
+
+
 </script>
 </html>

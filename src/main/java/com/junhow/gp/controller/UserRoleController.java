@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -110,6 +111,42 @@ public class UserRoleController {
             }
         }
         return new ResponseBean(200, "删除成功(Delete Success)", null);
+    }
+
+    @PostMapping("/setUserRole/{id}")
+    public ResponseBean add(@PathVariable String id, @RequestBody Map<String, String>  map) {
+        UserRole ur = new UserRole();
+        ur.setUserid(id);
+        List<UserRole> urs = userRoleService.select(ur);
+        List<String> roleids = new ArrayList<>();
+        for (UserRole userRole : urs) {
+            roleids.add(userRole.getRoleid());
+        }
+        List<String> inputList = new ArrayList<>();
+        for (Map.Entry<String, String> entry : ((Map<String, String>)map).entrySet()) {
+            inputList.add(entry.getValue());
+            if(roleids.contains(entry.getValue())) {
+
+            }
+            else {
+                ur.setRoleid(entry.getValue());
+                userRoleService.insertSelective(ur);
+            }
+        }
+        ur.setRoleid(null);
+        urs = userRoleService.select(ur);
+        roleids.clear();
+        for (UserRole userRole : urs) {
+            roleids.add(userRole.getRoleid());
+        }
+        roleids.removeAll(inputList);
+        if (roleids.size() > 0) {
+            for(String s : roleids) {
+                ur.setRoleid(s);
+                userRoleService.delete(ur);
+            }
+        }
+        return new ResponseBean(200, "修改成功(Insert Success)",null);
     }
 
 }

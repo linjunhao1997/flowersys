@@ -13,7 +13,9 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,13 +93,14 @@ public class UserController {
      * @author CodeGenerator
      * @date 2019/03/16 18:13
      */
-    @PostMapping("/update")
-    public ResponseBean update(@RequestBody User user) {
+    @PostMapping("/update/{id}")
+    public ResponseBean update(@PathVariable Integer id, @RequestBody User user) {
+        user.setId(id);
         int count = userService.updateByPrimaryKeySelective(user);
         if (count <= 0) {
             throw new CustomException("更新失败(Update Failure)");
         }
-        return new ResponseBean(200, "更新成功(Update Success)", user);
+        return new ResponseBean(200, "更新成功(Update Success)", null);
     }
 
     /**
@@ -130,6 +133,11 @@ public class UserController {
 
         System.out.println("是否认证通过：" + isAuthenticated);
         if (isAuthenticated) {
+            user.setLogintime(new Date());
+            Example example = new Example(User.class);
+            Example.Criteria criteria = example.createCriteria();
+            criteria.andEqualTo("username", user.getUsername()).andEqualTo("password",user.getPassword());
+            userService.updateByExample(user, example);
             return "success";
         } else {
             return "faild";

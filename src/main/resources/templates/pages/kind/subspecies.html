@@ -10,12 +10,12 @@
         <form id="form" class="layui-form">
             <input type="hidden" id="id" name="speciesid" th:value="${speciesid}">
             <div class="layui-form-item">
-                <label class="layui-form-label">亚种 </label>
-                <div class="layui-input-block">
-                    <input type="text" id="name" name="name" lay-verify="title" autocomplete="off"
-                           placeholder="请输入" class="layui-input">
-                </div>
+            <label class="layui-form-label">亚种 </label>
+            <div class="layui-input-block">
+                <input type="text" id="name" name="name" lay-verify="title" autocomplete="off"
+                       placeholder="请输入" class="layui-input">
             </div>
+        </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">拉丁学名</label>
                 <div class="layui-input-block">
@@ -54,8 +54,7 @@
                     {type: 'checkbox'},
                     {field:'id', title: 'id', hide:true},
                     {field: 'name', title: '亚种', edit: 'text'},
-                    {field: 'latinname', title: '拉丁学名', edit: 'text'},
-                    {field: 'parengId', title: '上级', edit: 'text'},
+                    {field: 'latinname', title: '拉丁学名', edit: 'text'}
                 ]
             ]
         });

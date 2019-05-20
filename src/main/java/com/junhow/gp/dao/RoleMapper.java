@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface RoleMapper extends Mapper<Role> {
     List<Role> getRolesByUserName(String username);
+
+    List<Role> getRolesByUserId(Integer id);
 }

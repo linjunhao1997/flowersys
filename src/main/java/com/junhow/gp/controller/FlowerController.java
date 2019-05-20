@@ -3,15 +3,17 @@ package com.junhow.gp.controller;
 import com.junhow.gp.common.ResponseBean;
 import com.junhow.gp.exception.CustomException;
 import com.junhow.gp.pojo.Flower;
+import com.junhow.gp.pojo.FlowerImageDto;
 import com.junhow.gp.service.IFlowerService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.websocket.server.PathParam;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,6 +85,9 @@ public class FlowerController {
      */
     @PostMapping("/add")
     public ResponseBean add(@RequestBody Flower flower) {
+        Date date = new Date();
+        flower.setGmtCreate(date);
+        flower.setGmtModified(date);
         int count = flowerService.insert(flower);
         if (count <= 0) {
             throw new CustomException("新增失败(Insert Failure)");
@@ -126,6 +131,12 @@ public class FlowerController {
         mv.addObject("imgList", this.flowerService.getFlowerAndImg(name));
         mv.setViewName("pages/flower/image.html");
         return mv;
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    @ResponseBody
+    public List<FlowerImageDto> result(@RequestBody Map<String, String> paramMap){
+        return this.flowerService.getFlowerAndImg(paramMap.get("name"));
     }
 
 }

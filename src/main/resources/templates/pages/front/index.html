@@ -58,7 +58,7 @@
     }
 
     window.onload = function() {
-        var socket = new Socket("ws://localhost:8081/echo/user");
+        var socket = new Socket("ws://139.196.102.33/flowersys/echo/user");
     }
     var s = document.getElementById('s');
     s.onclick = function() {
@@ -67,7 +67,7 @@
         $.ajax({
             type: 'post',
             contentType: 'application/json',
-            url: '/flower/search',
+            url: '/flowersys/flower/search',
             data: JSON.stringify({
                 "name": name
             }),

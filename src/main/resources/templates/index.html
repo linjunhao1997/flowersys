@@ -1,13 +1,13 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-	<head th:include="/common/common :: head('后台管理')"></head>
+	<head th:include="common/common :: head('后台管理')"></head>
 
 	<body>
 		<!-- 顶部开始 -->
 		<div class="container">
 			<div class="logo">
-				<a href="./index.html">后台管理</a>
+				<a href="https://github.com/linjunhao1997/flowersys">项目源码</a>
 			</div>
 			<div class="left_open">
 				<i title="展开左侧栏" class="iconfont">&#xe699;</i>
@@ -29,10 +29,6 @@
 				<li class="layui-nav-item">
 					<a href="javascript:;">设置</a>
 					<dl class="layui-nav-child">
-						<!-- 二级菜单 -->
-						<!--<dd>
-							<a onclick="WeAdminShow('个人信息','https://wang64.cn')">个人主页</a>
-						</dd>-->
 						<dd>
 							<a onclick="WeAdminShow('切换帐号','./login.shtml');">切换帐号</a>
 						</dd>
@@ -42,7 +38,7 @@
 					</dl>
 				</li>
 				<li class="layui-nav-item to-index">
-					<a href="/">前台首页</a>
+					<a href="/flowersys/index">前台首页</a>
 				</li>
 			</ul>
 
@@ -53,14 +49,6 @@
 		<div class="left-nav">
 			<div id="side-nav">
 				<ul id="nav">
-					<!--<li>
-						<a _href="./pages/welcome.shtml">
-							<i class="iconfont">&#xe726;</i>
-							<cite>我的桌面</cite>
-							<i class="iconfont nav_right">&#xe697;</i>
-						</a>
-					</li>-->
-
 					<li>
 						<a href="javascript:;">
 							<i class="iconfont">&#xe726;</i>
@@ -93,21 +81,6 @@
 									<cite>花卉列表</cite>
 								</a>
 							</li>
-							<!--<li>
-								<a href="javascript:;">
-									<i class="iconfont">&#xe6b8;</i>
-									<cite>错误页面</cite>
-									<i class="iconfont nav_right">&#xe697;</i>
-								</a>
-								<ul class="sub-menu">
-									<li>
-										<a _href="./pages/404.shtml">
-											<i class="iconfont">&#xe6a7;</i>
-											<cite>404页面</cite>
-										</a>
-									</li>
-								</ul>
-							</li>-->
 						</ul>
 					</li>
 
@@ -214,11 +187,11 @@
 		<div class="page-content">
 			<div class="layui-tab tab" lay-filter="wenav_tab" id="WeTabTip" lay-allowclose="true">
 				<ul class="layui-tab-title" id="tabName">
-					<li>我的主页</li>
+					<li>主页</li>
 				</ul>
 				<div class="layui-tab-content">
 					<div class="layui-tab-item layui-show">
-						<iframe src="https://cmd.wang64.cn" frameborder="0" scrolling="yes" class="weIframe"></iframe>
+						<iframe src="http://139.196.102.33" frameborder="0" scrolling="yes" class="weIframe"></iframe>
 					</div>
 				</div>
 			</div>
@@ -231,7 +204,7 @@
 			<div class="copyright">Copyright ©2018 WeAdmin v1.0 All Rights Reserved</div>
 		</div> -->
 		<!-- 底部结束 -->
-		<div th:include="/common/common :: commonJS" th:remove="tag"></div>
+		<div th:include="common/common :: commonJS" th:remove="tag"></div>
 		<script type="text/javascript" th:inline="javascript">
 			layui.config({
 			  	base: /*[[@{/js/}]]*/ './static/js/',
@@ -292,7 +265,7 @@
             $.ajax({
                 type: 'post',
                 contentType: 'application/json',
-                url: '/proposal/message',
+                url: '/flowersys/proposal/message',
                 success: function (data) {
                     if (data.code == '200') {
                         var element = document.createElement("span");
@@ -303,7 +276,7 @@
 						}
                     }
                 })
-            var socket = new Socket("ws://localhost:8081/echo/admin");
+            var socket = new Socket("ws://139.196.102.33/flowersys/echo/admin");
             };
 
 

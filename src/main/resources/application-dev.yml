@@ -3,16 +3,12 @@ server:
     servlet:
         context-path: /flowersys
 spring:
-    profiles:
-        active: dev
     servlet:
         multipart:
             max-file-size: 10MB
     datasource:
         name: SpringBootQuartz
         url: jdbc:mysql://127.0.0.1:3306/flowerdb?serverTimezone=GMT%2B8&useSSL=false&useUnicode=true&characterEncoding=UTF-8
-
-        #url: jdbc:mysql://localhost:3306/flowerdb?serverTimezone=GMT%2B8&useSSL=false&useUnicode=true&characterEncoding=UTF-8
         username: root
         password: mysql
         # 使用Druid数据源
@@ -59,3 +55,7 @@ mapper:
 logging:
     # Debug打印SQL
     level.com.junhow.gp.dao: debug
+
+#操作系统的资源文件路径，作为映射路径的真实路径
+resourcelocation: E:/upload/
+ip: 127.0.0.1:8081

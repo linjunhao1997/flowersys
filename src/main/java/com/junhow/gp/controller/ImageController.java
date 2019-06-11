@@ -1,13 +1,16 @@
 package com.junhow.gp.controller;
 
 import com.junhow.gp.common.ResponseBean;
+import com.junhow.gp.config.WebMvcConfig;
 import com.junhow.gp.exception.CustomException;
 import com.junhow.gp.pojo.Image;
 import com.junhow.gp.service.IImageService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,8 +30,15 @@ import java.util.Map;
 @RequestMapping("/image")
 public class ImageController {
 
-    private final static String REALFILEPATH = "E:/upload/";
-    private final static String VIRTUALFIILEPATH = "http://localhost:8081/upload/";
+    @Value("${resourcelocation}")
+    private String realFilePath;
+
+    @Value("${ip}")
+    private String ip;
+
+    /** 记住不能在这里直接拼接@value取得的字符串，此时是null，进入方法后才能获取@Value获取到值
+     *  private String virtualfilepath = "http://" + ip + "/flowersys/upload/";
+     */
     private final IImageService imageService;
 
     @Autowired
@@ -81,6 +91,7 @@ public class ImageController {
      */
     @PostMapping("/add")
     public ResponseBean add(@RequestBody Image image) {
+
         int count = imageService.insert(image);
         if (count <= 0) {
             throw new CustomException("新增失败(Insert Failure)");
@@ -115,7 +126,7 @@ public class ImageController {
             int begin = src.lastIndexOf("/");
             int end = src.length();
             String fileName = src.substring(begin, end);
-            File file = new File(REALFILEPATH + fileName);
+            File file = new File(realFilePath + fileName);
             file.delete();
         }
         int count = imageService.deleteByPrimaryKey(id);
@@ -129,17 +140,19 @@ public class ImageController {
     @PostMapping("/upload/{id}")
     @ResponseBody
     public ResponseBean upload(@RequestParam("file") MultipartFile file, @PathVariable Integer id) {
+
+        String virtualfilepath = "http://" + ip + "/flowersys/upload/";
         if (file.isEmpty()) {
             return null;
         }
 
         String fileName = file.getOriginalFilename();
 
-        File dest = new File(REALFILEPATH + fileName);
+        File dest = new File(realFilePath + fileName);
         try {
             file.transferTo(dest);
             Image image = new Image();
-            image.setSrc(VIRTUALFIILEPATH + fileName);
+            image.setSrc(virtualfilepath + fileName);
             image.setFlowerid(id);
             imageService.insert(image);
         } catch (IOException e) {

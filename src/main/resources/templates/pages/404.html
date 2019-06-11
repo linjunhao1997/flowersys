@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head th:include="/common/common :: head('404页面')"></head>
+    <head th:include="common/common :: head('404页面')"></head>
     <body>
         <div class="weadmin-body">
         	<div class="weadmin-trailer">
@@ -8,6 +8,6 @@
 			</div>
         </div>
 
-        <div th:include="/common/common :: commonJS" th:remove="tag"></div>
+        <div th:include="common/common :: commonJS" th:remove="tag"></div>
     </body>
 </html>

@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:include="/common/common :: head('花卉列表')"></head>
+<head th:include="common/common :: head('花卉列表')"></head>
 <body>
 
 <div class="weadmin-body">
@@ -68,7 +68,7 @@
         table.render({
             elem: '#userTableData',
             cellMinWidth: 80,
-            url: '/user/list', //数据接口,
+            url: '/flowersys/user/list', //数据接口,
             page: true, //开启分页
             toolbar: 'default',
             cols: [
@@ -108,7 +108,7 @@
                     $.ajax({
                         type: 'post',
                         contentType: 'application/json',
-                        url: '/role/getAllRole',
+                        url: '/flowersys/role/getAllRole',
                         success: function (data) {
                             if (data.code == '200'){
                                     var roles = data.data;
@@ -120,7 +120,7 @@
                                 $.ajax({
                                     type: 'post',
                                     contentType: 'application/json',
-                                    url: '/role/getRolesByUserId/' + id,
+                                    url: '/flowersys/role/getRolesByUserId/' + id,
                                     success: function (selectdata) {
                                         if (selectdata.code == '200'){
                                             var roles = selectdata.data;
@@ -173,7 +173,7 @@
                     $.ajax({
                         type: 'post',
                         contentType: 'application/json',
-                        url: '/user/delete',
+                        url: '/flowersys/user/delete',
                         data: JSON.stringify(checkStatus.data),
                         success: function (data) {
                             if (data.code == '200') {
@@ -198,7 +198,7 @@
             $.ajax({
                 type: 'post',
                 contentType: 'application/json',
-                url: '/user/update/'+ record.id,
+                url: '/flowersys/user/update/'+ record.id,
                 data: JSON.stringify(record),
                 success: function (data) {
                     if (data.code == '200') {
@@ -214,7 +214,7 @@
             $.ajax({
                 type: 'post',
                 contentType: 'application/json',
-                url: '/user/add',
+                url: '/flowersys/user/add',
                 data: JSON.stringify(field),
                 success: function(data) {
                     if (data.code == 200) {
@@ -231,7 +231,7 @@
             $.ajax({
                 type: 'post',
                 contentType: 'application/json',
-                url: '/user/role/setUserRole/'+ id,
+                url: '/flowersys/user/role/setUserRole/'+ id,
                 data: JSON.stringify(field),
                 success: function(data) {
                     if (data.code == 200) {

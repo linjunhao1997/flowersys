@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:include="/common/common :: head('角色列表')"></head>
+<head th:include="common/common :: head('角色列表')"></head>
 <body>
 
 <div class="weadmin-body">
@@ -58,7 +58,7 @@
         table.render({
             elem: '#roleTableData',
             cellMinWidth: 80,
-            url: '/role/list', //数据接口,
+            url: '/flowersys/role/list', //数据接口,
             page: true, //开启分页
             toolbar: 'default',
             cols: [
@@ -97,7 +97,7 @@
                     $.ajax({
                         type: 'post',
                         contentType: 'application/json',
-                        url: '/role/delete',
+                        url: '/flowersys/role/delete',
                         data: JSON.stringify(checkStatus.data),
                         success: function (data) {
                             if (data.code == '200') {
@@ -122,7 +122,7 @@
             $.ajax({
                 type: 'post',
                 contentType: 'application/json',
-                url: '/role/update',
+                url: '/flowersys/role/update',
                 data: JSON.stringify(record),
                 success: function (data) {
                     if (data.code == '200') {
@@ -138,7 +138,7 @@
             $.ajax({
                 type: 'post',
                 contentType: 'application/json',
-                url: '/role/add',
+                url: '/flowersys/role/add',
                 data: JSON.stringify(field),
                 success: function(data) {
                     if (data.code == 200) {

@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:include="/common/common :: head('需求建议')"></head>
+<head th:include="common/common :: head('需求建议')"></head>
 <body>
 <div id="add" style="padding-top:30px;padding-right: 70px;">
     <form id="aform"class="layui-form" action="">
@@ -52,14 +52,14 @@
         $.ajax({
             type: 'post',
             contentType: 'application/json',
-            url: '/proposal/add',
+            url: '/flowersys/proposal/add',
             data: JSON.stringify(field),
             success: function(data) {
                 if (data.code == "200") {
                     layer.confirm('您已提交成功', {
                         btn: ['返回'] //按钮
                     }, function(){
-                       location.href = './index.shtml';
+                       location.href = '/flowersys/index';
                     });
                 }
             }

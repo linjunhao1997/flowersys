@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:include="/common/common :: head('花卉列表')"></head>
+<head th:include="common/common :: head('花卉列表')"></head>
 <body>
 
 <div class="weadmin-body">
@@ -168,7 +168,7 @@
         $.ajax({
             type: 'post',
             contentType: 'application/json',
-            url: '/taxonomy/edit',
+            url: '/flowersys/taxonomy/edit',
             data: JSON.stringify(data),
             success: function(data) {
                 nextSelect.append("<option value=''>请选择一项</option>");
@@ -188,7 +188,7 @@
         table.render({
             elem: '#flowerData'
             , cellMinWidth: 80
-            , url: '/flower/list' //数据接口
+            , url: '/flowersys/flower/list' //数据接口
             , page: true //开启分页
             , toolbar: 'default'
             , cols: [[
@@ -234,7 +234,7 @@
                     $.ajax({
                         type: 'post',
                         contentType: 'application/json',
-                        url: '/flower/delete',
+                        url: '/flowersys/flower/delete',
                         data: JSON.stringify(checkStatus.data),
                         success: function (data) {
                             if (data.code == '200') {
@@ -262,7 +262,7 @@
             $.ajax({
                 type: 'post',
                 contentType: 'application/json',
-                url: '/flower/update',
+                url: '/flowersys/flower/update',
                 data: JSON.stringify(record),
                 success: function (data) {
                     if (data == 'success') {
@@ -282,7 +282,7 @@
                         shadeClose: true,
                         shade: 0.8,
                         area: ['600px', '70%'],
-                        content: '/flower/imagemanage?name=' + obj.data.name
+                        content: '/flowersys/flower/imagemanage?name=' + obj.data.name
                     });
                     break;
                 case 'edit':
@@ -292,7 +292,7 @@
                         shadeClose: true,
                         shade: 0.8,
                         area: ['600px', '70%'],
-                        content: '/flower/edit?phylumname=' + obj.data.phylumname
+                        content: '/flowersys/flower/edit?phylumname=' + obj.data.phylumname
                             + '&classname=' + obj.data.classname
                             + "&ordername=" + obj.data.ordername
                             + "&familyname=" + obj.data.familyname
@@ -326,7 +326,7 @@
         $.ajax({
             type: 'post',
             contentType: 'application/json',
-            url: '/taxonomy/edit',
+            url: '/flowersys/taxonomy/edit',
             data: JSON.stringify(data),
             success: function(data) {
                 for( i = 0; i < data.length; i++ ) {
@@ -368,7 +368,7 @@
             $.ajax({
                 type: 'post',
                 contentType: 'application/json',
-                url: '/flower/add',
+                url: '/flowersys/flower/add',
                 data: JSON.stringify(field),
                 success: function(data) {
                     if (data.code == "200") {

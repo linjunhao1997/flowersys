@@ -1,6 +1,7 @@
 package com.junhow.gp.controller;
 
 import com.junhow.gp.common.ResponseBean;
+import com.junhow.gp.config.WebMvcConfig;
 import com.junhow.gp.exception.CustomException;
 import com.junhow.gp.pojo.Class;
 import com.junhow.gp.service.IClassService;

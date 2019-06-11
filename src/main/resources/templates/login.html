@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:include="/common/common :: head('登录')"></head>
+<head th:include="common/common :: head('登录')"></head>
 <body class="login-bg">
     
     <div class="login">
@@ -17,7 +17,7 @@
         </form>
     </div>
 
-    <div th:include="/common/common :: commonJS" th:remove="tag"></div>
+    <div th:include="common/common :: commonJS" th:remove="tag"></div>
     <script type="text/javascript" th:inline="javascript">
         layui.extend({
             // {/}的意思即代表采用自有路径，即不跟随Base路径
@@ -31,7 +31,7 @@
                 // console.log(data.field);
                 $.ajax({
                     type: "post",
-                    url:'/user/doLogin',
+                    url:'/flowersys/user/doLogin',
                     contentType: 'application/json',
                     data:JSON.stringify(data.field),
                     success:function (data) {

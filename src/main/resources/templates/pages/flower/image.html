@@ -28,10 +28,6 @@
             <p id="demoText"></p>
         </div>
     </div>
-    <!-- <div th:each="m : ${imgList}">&lt;!&ndash; 其中m是个临时变量，像for(User u : userList)那样中的u&ndash;&gt;
-         <img  th:attr="src=${m.src}" />
-         <button class="layui-btn layui-btn-danger">删除图片</button>
-     </div>-->
 </body>
 <script type="text/javascript" th:inline="javascript">
     var deleteImage = function() {
@@ -43,7 +39,7 @@
         $.ajax({
             type: 'post',
             contentType: 'application/json',
-            url: '/image/delete',
+            url: '/flowersys/image/delete',
             data: JSON.stringify(id),
             success: function (data) {
                 if (data.code == '200') {
@@ -58,7 +54,7 @@
         var uploadInst = upload.render({
             elem: '#test1',
             accept: 'file'
-            ,url: '/image/upload/[[${imgList[0].id}]]'
+            ,url: '/flowersys/image/upload/[[${imgList[0].id}]]'
             ,before: function(obj){
                 //预读本地文件示例，不支持ie8
                 obj.preview(function(index, file, result){
@@ -71,6 +67,9 @@
                     return layer.msg('上传失败');
                 }
                 //上传成功
+                if (res.code == '200') {
+                    return layer.msg('上传成功');
+                }
             }
             ,error: function(){
                 //演示失败状态，并实现重传

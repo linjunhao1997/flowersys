@@ -71,28 +71,25 @@
             data: JSON.stringify({
                 "name": name
             }),
-            success: function(data) {
-                console.log(data);
-                for (var i = 0; i < data.length; i++) {
-                    $('#content').append(`
+            success: function (data) {
+                $('#content').append(`
                 <div class="columns">
                     <div class="column is-half is-offset-one-quarter" >
                      <div class="card">
-                         <div class="card-image">
-                           <img src="${data[i].src}" alt="${data[i].alt}">
+                         <div id="flowerimg" class="card-image">
                          </div>
                          <div id = "kind" style="color:darkgrey">
-                         <p>门: <span>${data[i].phylumname}</span></p>
-                         <p>纲: <span>${data[i].classname}</span></p>
-                         <p>目: <span>${data[i].ordername}</span></p>
-                         <p>科: <span>${data[i].familyname}</span></p>
-                         <p>属: <span>${data[i].genusname}</span></p>
-                         <p>种: <span>${data[i].speciesname}</span></p>
-                         <p>亚种: <span>${data[i].subspeciesname}</span></p>
+                         <p>门: <span>${data[0].phylumname}</span></p>
+                         <p>纲: <span>${data[0].classname}</span></p>
+                         <p>目: <span>${data[0].ordername}</span></p>
+                         <p>科: <span>${data[0].familyname}</span></p>
+                         <p>属: <span>${data[0].genusname}</span></p>
+                         <p>种: <span>${data[0].speciesname}</span></p>
+                         <p>亚种: <span>${data[0].subspeciesname}</span></p>
                          <br>
                          </div>
                          <div>
-                          <p>${data[i].description}</p>
+                          <p>${data[0].description}</p>
                          </div>
                          </div>
 
@@ -101,9 +98,14 @@
                     </div>
                  </div>
                 `);
+                for (var i = 0; i < data.length; i++) {
+                    $('#flowerimg').append(`
+                    <img src="${data[i].src}" alt="${data[i].alt}">
+                    `
+                    );
                 }
-
             }
+
         });
     }
 
